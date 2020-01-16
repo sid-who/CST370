@@ -1,0 +1,208 @@
+/*
+ * HackerRank link:
+ * Title:
+ * Abstract:
+ * Author:
+ * ID:
+ * Date:
+ */
+
+
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <stack>
+using namespace std;
+
+vector<vector<int>> grid;
+stack<int> stack1;
+vector<int> markArray;
+
+int commandCounter = 0;
+//the counter tracks the row position
+int marker = 1;
+//marks for the mark array
+int cLoc = 0;
+//marks initial command location
+
+int vertices;
+int edges;
+int start;
+int ending;
+
+void printMarks()
+{
+    //cout << "\n";
+    for(int i=0; i<markArray.size(); i++)
+    {
+        cout << "Mark[" << i << "]:" << markArray[i] << "\n";
+    }
+}
+
+void runTrace(int e /*edges*/, vector<vector<int>> grid)
+{
+    while(commandCounter <= e)
+    {
+        /*cout << "=========================" << "\n";
+        cout << "Command Counter is: " << commandCounter << "\n";
+        cout << "Marker value is: " << marker << "\n";
+        cout << "Command Location is: " << cLoc << "\n";
+        cout << "=========================" << "\n";*/
+        stack<int> tempstack;
+
+        for(int i=0; i<1; i++)
+        {
+            for(int j=0; j<vertices; j++)
+            {
+                int temp = grid[cLoc][j];
+                if(temp == 1)
+                {
+                    tempstack.push(j);
+                }
+                //tempstack.push(temp);
+            }
+        }
+        //Take the generated stack and reverse it.
+        while(!tempstack.empty())
+        {
+            int temp = tempstack.top();
+            tempstack.pop();
+            stack1.push(temp);
+        }
+
+
+        
+        /*cout << "REVERSE COMPLETED, SHOULD PRINT IN ORDER." << "\n";
+        cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << "\n";
+        cout << "TOP: @ ROW " << commandCounter << "\n";
+        while(!stack1.empty())
+        {
+            cout << stack1.top() << " --> ";
+            stack1.pop();
+        }*/
+
+        //location, new stack created. Begin first traversal. 
+        /*cout << "STACK TOP: " << stack1.top() << "\n";
+
+        int locTemp = stack1.top();
+        stack1.pop();
+        markArray[cLoc] = marker;
+        cout << "MARKED " << cLoc << " AS " << marker << "\n";
+
+        cLoc = locTemp;
+        marker = marker + 1;
+        commandCounter +=1;*/
+
+        if(!stack1.empty())
+        {
+            //cout << "STACK TOP: " << stack1.top() << "\n";
+
+            int locTemp = stack1.top();
+            stack1.pop();
+            if(markArray[cLoc] == 0)
+            {
+                markArray[cLoc] = marker;
+            }
+            //markArray[cLoc] = marker;
+            //cout << "MARKED " << cLoc << " AS " << marker << "\n";
+
+            if(stack1.size() > 1 && stack1.top() == locTemp)
+            {
+                stack1.pop();
+            }
+
+            cLoc = locTemp;
+            marker = marker + 1;
+            commandCounter +=1;
+        }
+        else //should be when the stack is depleted
+        {
+             markArray[cLoc] = marker;
+             break;
+        }
+
+
+        /*cout << "END=========================" << "\n";
+        cout << "Command Counter is: " << commandCounter << "\n";
+        cout << "Marker value is: " << marker << "\n";
+        cout << "=========================" << "\n";*/
+    }
+    printMarks();
+}
+
+
+int main()
+{
+    cin >> vertices;
+    for(int i=0; i<vertices; i++)
+    {
+        markArray.push_back(0);
+        //above is mark array only.
+        grid.push_back(vector<int> ());
+        for(int j=0; j<vertices; j++)
+        {
+            grid[i].push_back(-1);
+        }
+    }
+
+    cin>>edges;
+
+    for(int i=0; i<edges; i++)
+    {
+        cin >> start;
+        cin >> ending;
+        grid[start][ending] = 1;
+    }
+
+    //grid[2][3] = 5;
+
+    /*cout << "----------------------------" << "\n";
+    for (int i = 0; i < vertices; i++) 
+    { 
+        for (int j = 0; j < vertices; j++)
+        { 
+            cout << grid[i][j] << "  "; 
+        } 
+        cout<< "\n"; 
+    } 
+    cout << "----------------------------" << "\n";*/
+
+    runTrace(edges, grid);
+
+    /*stack<int> tempstack;
+
+    for(int i=0; i<1; i++)
+    {
+        for(int j=0; j<vertices; j++)
+        {
+            int temp = grid[i][j];
+            tempstack.push(temp);
+        }
+    }*/
+
+
+    //Take the generated stack and reverse it.
+    /*while(!tempstack.empty())
+    {
+        int temp = tempstack.top();
+        tempstack.pop();
+        stack1.push(temp);
+    }*/
+
+    /*cout << "MARK ARRAY, INITIAL." << "\n";
+    for(int i=0; i<markArray.size(); i++)
+    {
+        cout << markArray[i] << " -> ";
+    }*/
+ 
+    /*cout << "REVERSE COMPLETED, SHOULD PRINT IN ORDER." << "\n";
+    cout << "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" << "\n";
+    cout << "TOP: " << "\n";
+    while(!stack1.empty())
+    {
+        cout << stack1.top() << " --> ";
+        stack1.pop();
+    }*/
+
+}
